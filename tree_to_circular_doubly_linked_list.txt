@@ -1,0 +1,85 @@
+import java.util.*;
+// Other imports go here
+// Do NOT change the class name
+    class Node
+    {
+      Node left;
+      Node right;
+      int val;
+      public Node()
+      {
+        left = right = null;
+      }
+    }
+    
+class Main
+{
+    public static Node insert(Node root,int v)
+    {
+      if(root == null)
+      {
+        root = new Node();
+        root.left = null;
+        root.right = null;
+        root.val = v;
+        return root;
+      }
+      else if(v > root.val)
+      {
+        root.right = insert(root.right,v);
+      }
+      else
+      {
+        root.left = insert(root.left,v);
+      }
+      return root;
+    }
+    public static Node concatenate(Node a,Node b)
+    {
+      if(a == null)
+        return b;
+      if(b == null)
+        return a;
+      Node aEnd = a.left;
+      Node bEnd = b.left;
+      a.left = bEnd;
+      bEnd.right = a;
+      aEnd.right = b;
+      b.left = aEnd;
+      return a;
+    }
+    public static Node treeToList(Node n)
+    {
+      if(n == null)
+        return n;
+      Node leftList = treeToList(n.left);
+      Node rightList = treeToList(n.right);
+      n.left = n;
+      n.right = n;
+      n = concatenate(leftList,n);
+      n = concatenate(n,rightList);
+      return n;
+    }
+    public static void main(String[] args)
+    {
+      Scanner scan = new Scanner(System.in);
+      int n = scan.nextInt();
+      Node head = new Node();
+      head = null;
+      int arr[] = new int[n];
+      int i;
+      for(i = 0; i < n; i++)
+      {
+        arr[i] = scan.nextInt();
+        head = insert(head,arr[i]);
+      }
+      Node ans = treeToList(head);
+      Node a1 = ans;
+      while(ans.right.val != a1.val)
+      {
+        System.out.println(ans.val);
+        ans = ans.right;
+      }
+      System.out.println(ans.val);
+    }
+    }
