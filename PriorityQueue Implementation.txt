@@ -1,0 +1,81 @@
+import java.util.Scanner;
+// Other imports go here
+// Do NOT change the class name
+class PriorityQueue{
+      int  heap[];
+      int size;
+      public PriorityQueue(int maxSize)
+      {
+        heap = new int[maxSize];
+        size = 0;
+      }
+      public void swap(int i,int j)
+      {
+        int temp = heap[i];
+        heap[i]=heap[j];
+        heap[j]=heap[i];
+      }
+      public void push(int value)
+      {
+        if(size == heap.length)
+          throw new IllegalStateException();
+        int pos = size;
+        heap[pos] = value;
+        while(pos>0)
+        {
+          int parent = ((pos+1)/2)-1;
+          if(heap[parent] >= heap[pos])
+            break;
+          else
+          {
+            swap(parent,pos);
+          }
+          pos = parent;
+        }
+        size++;
+      }
+      public int pop()
+      {
+        if(size == 0)
+          throw new IllegalStateException();
+        int toReturn = heap[0];
+        heap[0] = heap[size-1];
+        size--;
+        int pos =size;
+        while(pos < size/2)
+        {
+          int leftChild = (pos*2)+1;
+          int rightChild = leftChild+1;
+          if(rightChild < size && heap[leftChild] < heap[rightChild])
+          {
+            if(heap[pos] >= heap [rightChild])
+              break;
+            swap(pos,rightChild);
+            pos = rightChild;
+          }
+          else
+          {
+            if(heap[pos] > heap[leftChild])
+              break;
+            swap(pos,leftChild);
+            pos = leftChild;
+          }
+        }
+        return toReturn;
+      }
+    }
+class Main
+{      
+    public static void main(String[] args)
+    {
+      Scanner scan = new Scanner(System.in);
+      PriorityQueue p = new PriorityQueue(100);
+      p.push(3);
+      p.push(1);
+      p.push(4);
+      p.push(10);
+      p.push(2);
+      int x = p.pop();
+      System.out.println(x);
+    }
+    }
